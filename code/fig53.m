@@ -48,7 +48,7 @@ for kV=1:NV
     f1=n0*log(1+exp((mu-E)./kT));
     f2=n0*log(1+exp((mu-V-E)./kT));
     in=10;
-    while in>.1     %  originally 0.01
+    while in>.01     %  originally 0.01
         sig1=zeros(Np);
         sig2=zeros(Np);
         rho=zeros(Np);

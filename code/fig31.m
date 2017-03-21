@@ -13,15 +13,15 @@ n0=2*m*kT*q/(2*pi*(hbar^2));
 %inputs 
 a=3e-10;
 t=(hbar^2)/(2*m*(a^2)*q);
-beta=q*a*a/epsil; 
+beta=q*a*a/epsil;
 Ns=15;
 Nc=70;
 Np=Ns+Nc+Ns;
 XX=a*1e9*[1:1:Np]; 
 mu=.318;
 Fn=mu*ones(Np,1); 
-Nd=2*((n0/2)^1.5)*Fhalf(mu/kT) 
-Nd=Nd*[ones(Ns,1);.5*ones(Nc,1);ones(Ns,1)]; 
+Nd=2*((n0/2)^1.5)*Fhalf(mu/kT)
+Nd=Nd*[ones(Ns,1);.5*ones(Nc,1);ones(Ns,1)];
   
 %d2/dx2 matrix for Poisson solution 
 D2=-(2*diag(ones(1,Np)))+(diag(ones(1,Np-1),1))+(diag(ones(1,Np-1),-1)); 
@@ -74,7 +74,7 @@ while ind>0.01
 end 
 
 plot(XX,n) 
-%plot(XX,U) 
+%plot(XX,U)
 %plot(XX,F,':') 
   
 save fig31 

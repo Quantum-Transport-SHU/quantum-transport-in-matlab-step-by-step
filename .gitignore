@@ -1,8 +1,10 @@
 .vscode
+.DS_Store
 octave-workspace
 fig31
 fig41
 fig41a
 fig42
+fig52
 fig53
 fig53a
