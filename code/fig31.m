@@ -26,7 +26,7 @@ Nd=Nd*[ones(Ns,1);.5*ones(Nc,1);ones(Ns,1)];
 %d2/dx2 matrix for Poisson solution 
 D2=-(2*diag(ones(1,Np)))+(diag(ones(1,Np-1),1))+(diag(ones(1,Np-1),-1)); 
 D2(1,1)=-1;
-D2(Np,Np)=-1; %zero field condition 
+D2(Np,Np)=-1; %zero field condition  %why
   
 %Hamiltonian matrix 
 T=(2*t*diag(ones(1,Np)))-(t*diag(ones(1,Np-1),1))-(t*diag(ones(1,Np-1),-1)); 
