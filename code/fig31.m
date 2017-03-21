@@ -2,14 +2,14 @@
 function fig31 
 clear all 
   
-%Constants (all MKS, except energy which is in eV) 
+%Constants (all MKS, except energy which is in eV)  MKS: Meter Kg Second
 hbar=1.06e-34;
 q=1.6e-19;
 epsil=10*8.85E-12;
 kT=.025; 
 m=.25*9.1e-31;
 n0=2*m*kT*q/(2*pi*(hbar^2)); 
-  
+
 %inputs 
 a=3e-10;
 t=(hbar^2)/(2*m*(a^2)*q);
@@ -44,7 +44,9 @@ dU=0;
 ind=10;
 while ind>0.01 
     %from U to n 
-    sig1=zeros(Np);sig2=zeros(Np);n=zeros(Np,1); 
+    sig1=zeros(Np);
+    sig2=zeros(Np);
+    n=zeros(Np,1); 
     for k=1:NE 
         ck=1-((E(k)+zplus-U(1))/(2*t));
         ka=acos(ck); 
@@ -52,7 +54,8 @@ while ind>0.01
         gam1=i*(sig1-sig1'); 
         ck=1-((E(k)+zplus-U(Np))/(2*t));
         ka=acos(ck); 
-        sig2(Np,Np)=-t*exp(i*ka);gam2=i*(sig2-sig2'); 
+        sig2(Np,Np)=-t*exp(i*ka);
+        gam2=i*(sig2-sig2'); 
 
         G=inv(((E(k)+zplus)*eye(Np))-T-diag(U)-sig1-sig2); 
         A=i*(G-G');
