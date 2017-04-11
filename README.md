@@ -23,4 +23,6 @@ $$ G=(ES-H-\Sigma_L- \Sigma_R)^{-1} $$ 　　
 
 
 
+## 参考资料
 
+- [学习 markdown](https://guides.github.com/features/mastering-markdown/)
