@@ -2,11 +2,11 @@
 function fig31 
 clear all 
   
-%Constants (all MKS, except energy which is in eV)  MKS: Meter Kg Second
+% Constants (all MKS, except energy which is in eV)  MKS: Meter Kg Second (Page 261)
 hbar=1.06e-34;
 q=1.6e-19;
 epsil=10*8.85E-12;
-kT=.025; 
+kT=.025;
 m=.25*9.1e-31;
 n0=2*m*kT*q/(2*pi*(hbar^2)); 
 
@@ -79,7 +79,7 @@ end
 plot(XX,n) 
 %plot(XX,U)
 %plot(XX,F,':') 
-  
+
 save fig31 
 hold on 
   
