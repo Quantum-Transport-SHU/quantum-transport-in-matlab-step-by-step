@@ -70,7 +70,7 @@ while ind>0.01
         D(k,1)=2*((n0/2)^1.5)*((Fhalf(z+.1)-Fhalf(z))/.1)/kT; 
     end 
     dN=n-Nd+((1/beta)*D2*U); 
-    dU=(-beta)*(inv(D2-(beta*diag(D))))*dN;U=U+dU; 
+    dU=(-beta)*(inv(D2-(beta*diag(D))))*dN;U=U+0.1*dU; 
 
     %check for convergence 
     ind=(max(max(abs(dN))))/(max(max(Nd))) 
