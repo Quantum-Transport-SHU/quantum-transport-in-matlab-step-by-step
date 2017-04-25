@@ -24,9 +24,9 @@ function currents=iv_curve(voltages, mol_H, extends)
 % H0 = [h0,t0,0,0,0; t0,h0,t0,0,0; 0,t0,h0,t0,0; 0,0,t0,h0,t0; 0,0,0,t0,h0];
 % % 电极在后， 第二个 coupling _index 为
 % extends = {
-%     struct('part_type', 0, 'epsilon', 0, 'coupling', 0.1, 'coupling_index', 5, 'sigma', 0, 'fermi', 2.3),
-%     struct('part_type', 1, 'epsilon', 0, 'coupling', 0.1, 'coupling_index', 1, 'sigma', .1*1.j, 'fermi', 2.3), 
-%     struct('part_type', 1, 'epsilon', 0, 'coupling', 0.1, 'coupling_index', 5, 'sigma', .1*1.j, 'fermi', 2.3)
+%     struct('part_type', 0, 'epsilon', 0, 'coupling', 0.1, 'coupling_index', 8, 'sigma', 0, 'fermi', 2.3),
+%     struct('part_type', 1, 'epsilon', 0, 'coupling', 0.1, 'coupling_index', 1, 'sigma', .1, 'fermi', 2.3), 
+%     struct('part_type', 1, 'epsilon', 0, 'coupling', 0.1, 'coupling_index', 8, 'sigma', .1, 'fermi', 2.3)
 % }
 % 
 % iv_curve([0.1, 0.2], H0, extends)
@@ -56,7 +56,7 @@ for i = 1:N
     if extends{i}.part_type == 1
         H(ind, ind) = H(ind, ind) + extends{i}.sigma;
         ilead = ilead + 1;
-        Sigma(ilead,ind,ind) = Sigma(ilead,ind,ind) + extends{i}.sigma;         
+        Sigma(ilead,ind,ind) = Sigma(ilead,ind,ind) + 1.j*extends{i}.sigma;         
     end   
 end
 
@@ -70,8 +70,8 @@ H = H(1:n0+N-nlead,1:n0+N-nlead);
 
 maxv = max(abs(voltages));
 fermi = extends{1}.fermi;
-NE = 1001;
-energies = linspace(fermi-maxv/2-8, fermi+maxv/2+3, NE);
+NE = 201;
+energies = linspace(fermi-maxv/2, fermi+maxv/2, NE);
 eta = 1e-6;
 S = eye(n0+N-nlead, n0+N-nlead);
 T = zeros(1, NE);
