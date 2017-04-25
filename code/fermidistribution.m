@@ -1,11 +1,5 @@
 function y=fermidistribution(E, mu, kt)
-if kt == 0
-    if real(E)>mu
-       y=0;
-    else
-       y=1;
-    end
-else
-    y = 1./(1+exp((E-mu)/kt));
-end
+x = (E-mu)/kt;
+x = clip(x, -200,200);
+y = 1./(1+exp(x));
 end

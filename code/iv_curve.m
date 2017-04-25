@@ -16,6 +16,21 @@ function currents=iv_curve(voltages, mol_H, extends)
 %%          sigma:  selfenergy, pure imaginary matrix with the same dimension as 'epsilon'
 %%          fermi: fermi level of the electrode, not useful for local state
 
+%% 宽带宽近似： sigma 与能量无关
+
+%% calling sample:
+% h0 = 0;
+% t0 = -1.0;
+% H0 = [h0,t0,0,0,0; t0,h0,t0,0,0; 0,t0,h0,t0,0; 0,0,t0,h0,t0; 0,0,0,t0,h0];
+% % 电极在后， 第二个 coupling _index 为
+% extends = {
+%     struct('part_type', 0, 'epsilon', 0, 'coupling', 0.1, 'coupling_index', 10, 'sigma', 0, 'fermi', 2.3),
+%     struct('part_type', 1, 'epsilon', 0, 'coupling', 0.1, 'coupling_index', 1, 'sigma', .1, 'fermi', 2.3), 
+%     struct('part_type', 1, 'epsilon', 0, 'coupling', 0.1, 'coupling_index', 10, 'sigma', .1, 'fermi', 2.3)
+% }
+
+% iv_curve([0.1, 0.2], H0, extends)
+
 
 n0 = length(mol_H);
 N = length(extends);
@@ -39,30 +54,31 @@ for i = 1:N
     H(ind, n0+i) = extends{i}.coupling';
     H(n0+i, ind) = extends{i}.coupling;
     if extends{i}.part_type == 1
-        H(n0+i, n0+i) = H(n0+i, n0+i) + extends{i}.sigma;
+        H(ind, ind) = H(ind, ind) + extends{i}.sigma;
         ilead = ilead + 1;
-        Sigma(ilead,n0+i,n0+i) = Sigma(ilead,n0+i,n0+i) + extends{i}.sigma;         
+        Sigma(ilead,ind,ind) = Sigma(ilead,ind,ind) + extends{i}.sigma;         
     end   
 end
 
 for i =1:nlead
-    Gamma(i,:,:) = 1.j*(Sigma(i,:,:) - Sigma(i,:,:)');
+    sigma = squeeze(Sigma(i,:,:));
+    Gamma(i,:,:) = 1.j*(sigma - sigma');
 end
-    
+
 maxv = max(abs(voltages));
 fermi = extends{1}.fermi;
 NE = 201;
 energies = linspace(fermi-maxv/2, fermi+maxv/2, NE);
 eta = 1e-6;
 S = eye(n0+N, n0+N);
-T = zeros(nE);
+T = zeros(1, NE);
 for i=1:NE
     G = inv((energies(i)+1j*eta)*S-H);
-    T(i) = real(trace(squeeze(Gamma(1,:,:))*G*squeeze(Gamma(2,:,:))*G'));
+    T(i) = real(trace(squeeze(Gamma(1,:,:))*G*squeeze(Gamma(2,:,:))*G')); % fisher lee formula
 end
 
-nv = len(voltages);
-currents = zeros(nv);
+nv = length(voltages);
+currents = zeros(1, nv);
 dE = energies(2) - energies(1);
 for i = 1:nv
     factors = fermidistribution(energies, fermi+voltages(i)/2, 0) - fermidistribution(energies, fermi-voltages(i)/2, 0);
@@ -70,27 +86,3 @@ for i = 1:nv
 end
 
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
