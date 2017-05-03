@@ -13,7 +13,9 @@ G_lesser = zeros(NE, N, N);
 
 for i =1:NE
     G = inv(energy(i) * S - H - sigmal - sigmar);
-    sigmal_lesser = 1.j*fl(i)*(sigmal' - sigmal);
-    sigmar_lesser = 1.j*fr(i)*(sigmar' - sigmar);
+    sigmal_lesser = fl(i)*(sigmal' - sigmal);
+    sigmar_lesser = fr(i)*(sigmar' - sigmar);
     G_lesser(i,:,:) = G*(sigmal_lesser + sigmar_lesser)*G';
+end
+
 end

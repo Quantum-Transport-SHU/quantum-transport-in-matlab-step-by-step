@@ -1,4 +1,4 @@
-function currents=sc_iv_curve(voltages, mol_H, extends, fermi, kt)
+function currents=sc_iv_curve(voltages, mol_H, extends, kt)
 %% This function output an selfconsistent i-v curve of a transport model including
 %% electrodes and local states, the iv curve is obtained from the
 %% integration of transmission coefficients with electrostatic field
@@ -81,8 +81,11 @@ dE = energies(2) - energies(1);
 sigmal = squeeze(Sigma(1,:,:));
 sigmar = squeeze(Sigma(2,:,:));
 
+H0 = H;
+
 for i = 1:nv
-    H = get_selfconsistent_hamiltonian(S, H, Sigma, voltages(i), fermi, kt);
+    fprintf('voltage = %f\n', voltages(i)); 
+    H = get_selfconsistent_hamiltonian(S, H0, Sigma, voltages(i), fermi, kt);
 
     for k=1:NE
         G = inv((energies(k)+1j*eta)*S-H-sigmal-sigmar);
