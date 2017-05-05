@@ -67,8 +67,8 @@ for i = 1:N
         S(iN, ind) = 0.25;
         D2(ind, ind) = D2(ind, ind) - 1;
         D2(iN, iN) = -2;
-        D2(ind, iN) = 1;
-        D2(iN, ind) = 1;
+        D2(ind, iN) = -1;
+        
         iN = iN + 1;
     end
     if extends{i}.part_type == 1
@@ -89,6 +89,14 @@ NE = 1001;
 energies = linspace(fermi-maxv/2-8, fermi+maxv/2+3, NE);
 eta = 1e-6;
 
+
+
+D2=-(2*diag(ones(1,N)))+(diag(ones(1,N-1),1))+(diag(ones(1,N-1),-1));
+D2(6,6) = -1;
+D2(5,5) = -3;
+D2(6,5) = 1;
+D2(5,6) = 1;
+
 T = zeros(1, NE);
 
 nv = length(voltages);
@@ -102,7 +110,7 @@ H0 = H;
 
 for i = 1:nv
     fprintf('voltage = %f\n', voltages(i)); 
-    H = get_selfconsistent_hamiltonian(S, H0, Sigma, D2, voltages(i), fermi, kt);
+    H = get_selfconsistent_hamiltonian(S, H0, Sigma, voltages(i), fermi, kt);
 
     for k=1:NE
         G = inv((energies(k)+1j*eta)*S-H-sigmal-sigmar);
