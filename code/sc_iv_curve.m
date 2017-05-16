@@ -109,7 +109,7 @@ for i = 1:nv
         T(k) = real(trace(squeeze(Gamma(1,:,:))*G*squeeze(Gamma(2,:,:))*G')); % fisher lee formula
     end
     
-    factors = fermidistribution(energies, fermi+voltages(i)/2, 0) - fermidistribution(energies, fermi-voltages(i)/2, 0);
+    factors = fermidistribution(energies, fermi+voltages(i)/2, kt) - fermidistribution(energies, fermi-voltages(i)/2, kt);
     currents(i) = sum(T.*factors)*dE;
 end
 

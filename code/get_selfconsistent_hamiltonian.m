@@ -11,7 +11,7 @@ H = H0;
 n=0;
 U0 = zeros(N,1) + 1;
 
-mx = mixer(0.1, 6, false);
+mx = mixer(0.01, 6, false);
 
 while max(abs(dU)) > tol
     D = get_density_matrix(S, H, Sigma, fermi, kt, voltage);
