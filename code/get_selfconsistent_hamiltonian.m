@@ -2,7 +2,7 @@ function H = get_selfconsistent_hamiltonian(S, H0, Sigma, D2, voltage, fermi, kt
 
 N = length(S);
 dU = zeros(N,1) + 1;
-tol = 1e-4;
+tol = 1e-5;
 
 D0 = get_density_matrix(S, H0, Sigma, fermi, kt, 0);
 
@@ -11,7 +11,7 @@ H = H0;
 n=0;
 U0 = zeros(N,1) + 1;
 
-mx = mixer(0.01, 6, false);
+mx = mixer(0.1, 6, false);
 
 while max(abs(dU)) > tol
     D = get_density_matrix(S, H, Sigma, fermi, kt, voltage);
