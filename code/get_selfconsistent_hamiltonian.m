@@ -2,7 +2,7 @@ function H = get_selfconsistent_hamiltonian(S, H0, Sigma, D2, voltage, fermi, kt
 
 N = length(S);
 dU = zeros(N,1) + 1;
-tol = 1e-5;
+tol = 1e-6;
 
 D0 = get_density_matrix(S, H0, Sigma, fermi, kt, 0);
 
