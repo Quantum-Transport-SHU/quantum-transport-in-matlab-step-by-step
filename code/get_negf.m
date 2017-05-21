@@ -11,7 +11,7 @@ sigma = sigmal + sigmar;
 N = length(S);
 NE = length(energy);
 
-eta = 1e-6;
+eta = 1e-5;
 
 G_lesser = zeros(NE, N, N);
 unit_mat = eye(N);

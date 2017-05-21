@@ -1,4 +1,4 @@
-function H = get_selfconsistent_hamiltonian(S, H0, Sigma, D2, voltage, fermi, kt)
+function H = get_selfconsistent_hamiltonian(S, H0, Sigma, D2, Laplacian, voltage, fermi, kt)
 
 N = length(S);
 dU = zeros(N,1) + 1;
@@ -13,13 +13,17 @@ U0 = zeros(N,1) + 1;
 
 mx = mixer(0.1, 6, false);
 
+addition = zeros(2,1);
+addition(1) = voltage/2;
+addition(2) = -voltage/2;
+rho_addition = -Laplacian(:,[7,8])*addition;
+rho_addition = rho_addition(1:6);
+
 while max(abs(dU)) > tol
     D = get_density_matrix(S, H, Sigma, fermi, kt, voltage);
     drho = -4*pi*diag(D-D0);
-    addition = zeros(length(drho),1);
-    addition(1) = voltage/2;
-    addition(5) = -voltage/2;
-    U = inv(D2)*(drho + addition);
+
+    U = inv(D2)*(drho + rho_addition);
 
     dU = U - U0;
     

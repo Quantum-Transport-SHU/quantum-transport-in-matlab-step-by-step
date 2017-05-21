@@ -49,18 +49,22 @@ D2 = zeros(n0+N-nlead, n0+N-nlead);
 Sigma = zeros([nlead, n0+N-nlead, n0+N-nlead]);
 Gamma = zeros([nlead, n0+N-nlead, n0+N-nlead]);
 
+
 H(1:n0,1:n0) = mol_H;
 S(1:n0,1:n0) = eye(n0) + diag(ones(1,n0-1),1)*0.25 + diag(ones(1,n0-1),-1)*0.25;
 D2(1:n0,1:n0) = -2*eye(n0) + diag(ones(1,n0-1),1) + diag(ones(1,n0-1),-1);
+Laplacian = -2*eye(n0) + diag(ones(1,n0-1),1) + diag(ones(1,n0-1),-1);
 
 ilead = 0;
-iN = n0+1;
+iN = n0 + 1;
+iN2 = n0 + 1;
 for i = 1:N
     ind = extends{i}.coupling_index;
     if extends{i}.part_type == 0
         H(iN, iN) = extends{i}.epsilon;
         H(ind, iN) = extends{i}.coupling';
         H(iN, ind) = extends{i}.coupling;
+        H(ind, ind) = H(ind, ind) + 1;
         S(ind, ind) = S(ind, ind) + 0.5;
         S(iN, iN) = 0.5;
         S(ind, iN) = 0.25;
@@ -69,8 +73,14 @@ for i = 1:N
         D2(iN, iN) = -2;
         D2(ind, iN) = 1;
         D2(iN, ind) = 1;
-        iN = iN + 1;
+        Laplacian(ind,ind) = Laplacian(ind, ind) - 1;
+        iN = iN + 1;     
     end
+    Laplacian(iN2, iN2) = -2;
+    Laplacian(ind, iN2) = 1;
+    Laplacian(iN2, ind) = 1;
+    
+    iN2 = iN2 + 1;
     if extends{i}.part_type == 1
         ilead = ilead + 1;
         Sigma(ilead,ind,ind) = Sigma(ilead,ind,ind) + extends{i}.sigma;         
@@ -87,7 +97,7 @@ maxv = max(abs(voltages));
 fermi = extends{1}.fermi;
 NE = 1001;
 energies = linspace(fermi-maxv/2-8, fermi+maxv/2+3, NE);
-eta = 1e-6;
+eta = 1e-2;
 
 T = zeros(1, NE);
 
@@ -102,7 +112,7 @@ H0 = H;
 
 for i = 1:nv
     fprintf('voltage = %f\n', voltages(i)); 
-    H = get_selfconsistent_hamiltonian(S, H0, Sigma, D2, voltages(i), fermi, kt);
+    H = get_selfconsistent_hamiltonian(S, H0, Sigma, D2, Laplacian, voltages(i), fermi, kt);
 
     for k=1:NE
         G = inv((energies(k)+1j*eta)*S-H-sigmal-sigmar);
