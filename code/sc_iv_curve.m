@@ -96,7 +96,7 @@ end
 maxv = max(abs(voltages));
 fermi = extends{1}.fermi;
 NE = 1001;
-energies = linspace(fermi-maxv/2-8, fermi+maxv/2+3, NE);
+energies = linspace(fermi-maxv/2-3*kt, fermi+maxv/2+3*kt, NE);
 eta = 1e-2;
 
 T = zeros(1, NE);
